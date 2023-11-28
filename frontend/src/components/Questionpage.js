@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, accordion } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Timer from "./Timer";
@@ -41,7 +41,7 @@ const Questionpage = () => {
     ((currentQuestionIndex + 1) / totalQuestionCount) * 100;
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option)
+    setSelectedOption(option);
   };
 
   

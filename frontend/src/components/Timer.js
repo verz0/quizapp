@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const useTimer = () => {
-  const [timeLeft, setTimeLeft] = useState(5);
+  const [timeLeft, setTimeLeft] = useState(300);
   
 
   useEffect(() => {
