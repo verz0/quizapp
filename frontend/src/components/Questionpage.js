@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@material-tailwind/react";
+import { Button, accordion } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Timer from "./Timer";
-import Timebar from "./Timebar";
 import Chat from "./chat";
 
 const Questionpage = () => {
@@ -37,10 +36,15 @@ const Questionpage = () => {
   }, []);
 
   const question = questions[currentQuestionIndex];
+  const totalQuestionCount = questions.length;
+  const currentQuestionPercent =
+    ((currentQuestionIndex + 1) / totalQuestionCount) * 100;
 
   const handleOptionClick = (option) => {
-    setSelectedOption(option);
+    setSelectedOption(option)
   };
+
+  
 
   const isContinueDisabled = !selectedOption || !question;
 
@@ -56,13 +60,26 @@ const Questionpage = () => {
       }
     }
   };
+  
+  const handleTimeOut = () => {
+      // console.log(currentQuestionIndex);
+    const nextQuestionIndex = currentQuestionIndex + 1;
+    // console.log(nextQuestionIndex);
+    if (nextQuestionIndex < questions.length) {
+      setCurrentQuestionIndex(nextQuestionIndex);
+      setSelectedOption(null);
+      setResetHint((prev) => !prev);
+    } else {
+      console.log("End of questions");
+    }
+  };
 
   return (
     <div className="h-screen w-screen divide-y divide-solid">
       <div className="h-4/5 flex">
         <div className="w-2/3 px-4">
           <div className="box-border p-4 text-lg text-blue-texts py-10">
-            {question && question.question}
+            Q.{currentQuestionIndex + 1} {question && question.question}
           </div>
           <div className="flex flex-col h-screen p-4 space-y-7">
             {question &&
@@ -95,22 +112,46 @@ const Questionpage = () => {
       </div>
       <div className="h-1/5 px-12">
         <div className="h-5"></div>
-        <div className="text-blue-texts">qn no</div>
-        <Timebar />
+        <div className="text-blue-texts">
+          {currentQuestionIndex + 1 + "/" + totalQuestionCount}
+        </div>
+        <div className="h-1 w-full bg-gray-300">
+          <div
+            style={{ width: `${currentQuestionPercent}%` }}
+            className={`h-full bg-blue-texts`}
+          ></div>
+        </div>
         <div className="flex justify-center">
           <div className="text-blue-texts">
-            Time remaining:
+            Time remaining 
             <Timer />
+            {/* {Timer()==="0:0" && handleTimeOut()} */}
+            {console.log(currentQuestionIndex)}
             <div className="flex justify-normal items-center h-20">
-              <Button
-                className={`text-white bg-blue-texts rounded-full p-4 w-32 justify-items-end ${
-                  isContinueDisabled ? "bg-gray-400 cursor-not-allowed" : ""
-                }`}
-                onClick={handleContinue}
-                disabled={isContinueDisabled}
-              >
-                Continue
-              </Button>
+              <div>
+                {currentQuestionIndex + 1 != totalQuestionCount && (
+                  <Button
+                    className={`text-white bg-blue-texts rounded-full p-4 w-32 justify-items-end ${
+                      isContinueDisabled ? "bg-gray-400 cursor-not-allowed" : ""
+                    }`}
+                    onClick={handleContinue}
+                    disabled={isContinueDisabled}
+                  >
+                    Continue
+                  </Button>
+                )}
+                {currentQuestionIndex + 1 == totalQuestionCount && (
+                  <Button
+                    className={`text-white bg-blue-texts rounded-full p-4 w-32 justify-items-end ${
+                      isContinueDisabled ? "bg-gray-400 cursor-not-allowed" : ""
+                    }`}
+                    onClick={handleContinue}
+                    disabled={isContinueDisabled}
+                  >
+                    Submit
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
