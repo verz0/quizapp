@@ -66,19 +66,22 @@ const Questionpage = () => {
           </div>
           <div className="flex flex-col h-screen p-4 space-y-7">
             {question &&
-              question.options.map((option, index) => (
-                <Button
-                  key={index}
-                  className={`border border-blue-texts w-32 text-black p-4 rounded-lg ${
-                    selectedOption === option
-                      ? "bg-hover-color text-white"
-                      : "hover:bg-hover-color hover:text-white"
-                  }`}
-                  onClick={() => handleOptionClick(option)}
-                >
-                  {option}
-                </Button>
-              ))}
+              question.op1 && 
+              [question.op1, question.op2, question.op3, question.op4].map(
+                (option, index) => (
+                  <Button
+                    key={index}
+                    className={`border border-blue-texts w-32 text-black p-4 rounded-lg ${
+                      selectedOption === option
+                        ? "bg-hover-color text-white"
+                        : "hover:bg-hover-color hover:text-white"
+                    }`}
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option}
+                  </Button>
+                )
+              )}
           </div>
         </div>
         <div className="w-1/3 bg-blue-50">
@@ -89,7 +92,7 @@ const Questionpage = () => {
             className="bg-blue-50 p-4"
             style={{ whiteSpace: "break-spaces" }}
           >
-            <Chat text={question && question.hint} resetHint={resetHint} />
+            <Chat text={question && question.misleading_suggestion} resetHint={resetHint} />
           </div>
         </div>
       </div>
