@@ -12,6 +12,15 @@ const Questionpage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [resetHint, setResetHint] = useState(false);
 
+
+  const dateUnix=Date.now();
+  const date= new Date(dateUnix)
+  const hr = ('0' + date.getHours()).slice(-2);
+  const min = ('0' + date.getMinutes()).slice(-2); 
+  const sec = ('0' + date.getSeconds()).slice(-2); 
+  const curtime = `${hr}:${min}:${sec}`;
+  // console.log(curtime);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,15 +49,47 @@ const Questionpage = () => {
   const currentQuestionPercent =
     ((currentQuestionIndex + 1) / totalQuestionCount) * 100;
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = (option,index) => {
+    const action= JSON.stringify(option);
+    // console.log(action);
+    // console.log(index);
+    let va="A";
+    if(index==1){
+      va="B";
+    }
+    else if(index==2){
+      va="C";
+    }
+    else if(index==3){
+      va="D";
+    }
+    const pageno=JSON.stringify(currentQuestionIndex+1);
+    const details={"user_id":"1","action":va,"page":pageno,"time":curtime}
+    // console.log(details);
+    axios.post('http://127.0.0.1:8080/api/unprompted/',details)
+    .then(response => {
+      console.log(response.data); 
+      setSelectedOption(option);
+    })
+    .catch(error => {
+      console.error('Error while making the Axios request:', error);
+    });
     setSelectedOption(option);
+    
   };
 
   
 
   const isContinueDisabled = !selectedOption || !question;
-
   const handleContinue = () => {
+    const pageno=JSON.stringify(currentQuestionIndex+1)
+    axios.post('http://127.0.0.1:8080/api/unprompted/',{"user_id":"1","action":"Continue","page":pageno,"time":curtime})
+    .then(response => {
+      console.log(response.data); 
+    })
+    .catch(error => {
+      console.error('Error while making the Axios request:', error);
+    });
     if (!isContinueDisabled && question) {
       const nextQuestionIndex = currentQuestionIndex + 1;
       if (nextQuestionIndex < questions.length) {
@@ -91,7 +132,7 @@ const Questionpage = () => {
                       ? "bg-hover-color text-white"
                       : "hover:bg-hover-color hover:text-white"
                   }`}
-                  onClick={() => handleOptionClick(option)}
+                  onClick={() => handleOptionClick(option,index)}
                 >
                   {option}
                 </Button>

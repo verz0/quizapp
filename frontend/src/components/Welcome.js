@@ -1,14 +1,37 @@
 import * as React from "react";
 import { Button } from "@material-tailwind/react";
+import axios from "axios";
 import {
   useNavigate,
 } from "react-router-dom";
+
+
+
+const dateUnix=Date.now();
+const date= new Date(dateUnix)
+const hr = ('0' + date.getHours()).slice(-2);
+const min = ('0' + date.getMinutes()).slice(-2); 
+const sec = ('0' + date.getSeconds()).slice(-2); 
+const curtime = `${hr}:${min}:${sec}`;
+// console.log(curtime);
+
 
 const Welcome = () => {
   const navigate = useNavigate();
 //   const handleButtonClick = () => {
 //     navigate("/question", {replace: false});
 //   };
+const handleStart = () => {
+  navigate("/question")
+  axios.post('http://127.0.0.1:8080/api/unprompted/',{"user_id":"1","action":"Start","page":0,"time":curtime})
+  .then(response => {
+    console.log(response.data); 
+  })
+  .catch(error => {
+    console.error('Error while making the Axios request:', error);
+  })
+};
+
 
   return (
     <div>
@@ -27,7 +50,7 @@ const Welcome = () => {
               <div className="flex justify-center">
                 <Button
                   className="text-white bg-blue-texts rounded-full p-4"
-                  onClick={()=> navigate("/question")}
+                  onClick={handleStart}                  
                 >
                   Get Started
                 </Button>
