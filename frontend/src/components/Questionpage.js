@@ -124,7 +124,7 @@ const Questionpage = () => {
           </div>
           <div className="flex flex-col h-screen p-4 space-y-7">
             {question &&
-              question.options.map((option, index) => (
+              [question.op1, question.op2, question.op3, question.op4].map((option, index) => (
                 <Button
                   key={index}
                   className={`border border-blue-texts w-32 text-black p-4 rounded-lg ${
