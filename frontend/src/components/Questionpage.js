@@ -147,7 +147,7 @@ const Questionpage = () => {
             className="bg-blue-50 p-4"
             style={{ whiteSpace: "break-spaces" }}
           >
-            <Chat text={question && question.hint} resetHint={resetHint} />
+            <Chat text={question && question.misleading_suggestion} resetHint={resetHint} />
           </div>
         </div>
       </div>
