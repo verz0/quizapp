@@ -2,9 +2,11 @@ import * as React from "react";
 import { Button } from "@material-tailwind/react";
 import axios from "axios";
 import {
+  Link,
   useNavigate,
 } from "react-router-dom";
-
+import Questionpage from "./Questionpage";
+import { v4 as uuid } from "uuid";
 
 
 const dateUnix=Date.now();
@@ -22,8 +24,18 @@ const Welcome = () => {
 //     navigate("/question", {replace: false});
 //   };
 const handleStart = () => {
-  navigate("/question")
-  axios.post('http://127.0.0.1:8080/api/unprompted/',{"user_id":"1","action":"Start","page":0,"time":curtime})
+  const uniqueID = uuid();
+  const user=JSON.stringify(uniqueID);
+  navigate("/question",{state:{user_id:uniqueID}});
+  console.log(uniqueID);
+  axios.post('http://127.0.0.1:8080/api/unprompted/',{"user_id":user,"uid_no":0,"action":"Start","page":0,"time":curtime})
+  .then(response => {
+    console.log(response.data); 
+  })
+  .catch(error => {
+    console.error('Error while making the Axios request:', error);
+  })
+  axios.post('http://127.0.0.1:8080/api/users/',{"id":0,"uid":user})
   .then(response => {
     console.log(response.data); 
   })
