@@ -24,24 +24,17 @@ const Welcome = () => {
 //     navigate("/question", {replace: false});
 //   };
 const handleStart = () => {
-  const uniqueID = uuid();
-  const user=JSON.stringify(uniqueID);
-  navigate("/question",{state:{user_id:uniqueID}});
-  console.log(uniqueID);
-  axios.post('http://127.0.0.1:8080/api/unprompted/',{"user_id":user,"uid_no":0,"action":"Start","page":0,"time":curtime})
+  
+  navigate("/question");
+  
+  axios.post('http://127.0.0.1:8080/api/unprompted/',{"action":"Start","page":0,"time":curtime})
   .then(response => {
     console.log(response.data); 
   })
   .catch(error => {
     console.error('Error while making the Axios request:', error);
   })
-  axios.post('http://127.0.0.1:8080/api/users/',{"id":0,"uid":user})
-  .then(response => {
-    console.log(response.data); 
-  })
-  .catch(error => {
-    console.error('Error while making the Axios request:', error);
-  })
+  
 };
 
 

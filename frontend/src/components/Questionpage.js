@@ -15,9 +15,6 @@ const Questionpage = () => {
   const [resetHint, setResetHint] = useState(false);
   
   const location = useLocation();
-  const {user_id}=location.state;
-  const user=JSON.stringify(user_id);
-  console.log(user_id);
   const dateUnix=Date.now();
   const date= new Date(dateUnix)
   const hr = ('0' + date.getHours()).slice(-2);
@@ -30,7 +27,7 @@ const Questionpage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/questions/"
+          "http://localhost:8080/api/questions/"
         );
         if (
           response.data &&
@@ -69,7 +66,7 @@ const Questionpage = () => {
     }
     const pageno=JSON.stringify(currentQuestionIndex+1);
     
-    const details={"user_id":user,"uid_no":0,"action":va,"page":pageno,"time":curtime}
+    const details={"action":va,"page":pageno,"time":curtime}
     // console.log(details);
     axios.post('http://127.0.0.1:8080/api/unprompted/',details)
     .then(response => {
@@ -88,7 +85,7 @@ const Questionpage = () => {
   const isContinueDisabled = !selectedOption || !question;
   const handleContinue = () => {
     const pageno=JSON.stringify(currentQuestionIndex+1)
-    axios.post('http://127.0.0.1:8080/api/unprompted/',{"user_id":user,"uid_no":0,"action":"Continue","page":pageno,"time":curtime})
+    axios.post('http://127.0.0.1:8080/api/unprompted/',{"action":"Continue","page":pageno,"time":curtime})
     .then(response => {
       console.log(response.data); 
     })
