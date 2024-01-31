@@ -27,7 +27,7 @@ const handleStart = () => {
   
   navigate("/question");
   
-  axios.post('http://127.0.0.1:8080/api/unprompted/',{"action":"Start","page":0,"time":curtime})
+  axios.post('http://127.0.0.1:8080/api/unprompted/',{"user":1,"action":"Start","page":0,"time":curtime})
   .then(response => {
     console.log(response.data); 
   })

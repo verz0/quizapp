@@ -66,7 +66,7 @@ const Questionpage = () => {
     }
     const pageno=JSON.stringify(currentQuestionIndex+1);
     
-    const details={"action":va,"page":pageno,"time":curtime}
+    const details={"user":"sfkl","action":va,"page":pageno,"time":curtime}
     // console.log(details);
     axios.post('http://127.0.0.1:8080/api/unprompted/',details)
     .then(response => {
@@ -77,7 +77,6 @@ const Questionpage = () => {
       console.error('Error while making the Axios request:', error);
     });
     setSelectedOption(option);
-    
   };
 
   
@@ -85,7 +84,7 @@ const Questionpage = () => {
   const isContinueDisabled = !selectedOption || !question;
   const handleContinue = () => {
     const pageno=JSON.stringify(currentQuestionIndex+1)
-    axios.post('http://127.0.0.1:8080/api/unprompted/',{"action":"Continue","page":pageno,"time":curtime})
+    axios.post('http://127.0.0.1:8080/api/unprompted/',{"user":"ldjflkj","action":"Continue","page":pageno,"time":curtime})
     .then(response => {
       console.log(response.data); 
     })

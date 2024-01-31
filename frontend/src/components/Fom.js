@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 const BorderForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    roll_no: "",
     name: "",
-    rollNo: "",
     email: "",
   });
 
@@ -20,7 +20,14 @@ const BorderForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted with data:", formData);
+    axios.post('http://127.0.0.1:8080/api/user/',{"user":"ajflkkjlk","name":"akkjk","email":"sfek@ngk"})
+  .then(response => {
+    console.log(response.data); 
+  })
+  .catch(error => {
+    console.error('Error while making the Axios request:', error);
+  })
+  console.log(formData);
     navigate("/Welcome");
   };
 
@@ -52,16 +59,16 @@ const BorderForm = () => {
         </div>
         <div className="mb-7">
           <label
-            htmlFor="rollNo"
+            htmlFor="roll_no"
             className="block mb-2 text-sm font-medium text-blue-texts"
           >
             Roll Number
           </label>
           <input
             type="text"
-            id="rollNo"
-            name="rollNo"
-            value={formData.rollNo}
+            id="roll_no"
+            name="roll_no"
+            value={formData.roll_no}
             onChange={handleChange}
             className="border border-blue-texts p-2.5 rounded-md w-full"
             placeholder="enter your roll number"
