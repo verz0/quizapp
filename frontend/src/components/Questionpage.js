@@ -105,18 +105,19 @@ const Questionpage = () => {
     }
   };
   
-  const handleTimeOut = () => {
-      // console.log(currentQuestionIndex);
-    const nextQuestionIndex = currentQuestionIndex + 1;
-    // console.log(nextQuestionIndex);
-    if (nextQuestionIndex < questions.length) {
-      setCurrentQuestionIndex(nextQuestionIndex);
-      setSelectedOption(null);
-      setResetHint((prev) => !prev);
-    } else {
-      console.log("End of questions");
+  const handleSubmit = () => {
+    const pageno=JSON.stringify(currentQuestionIndex+1)
+    axios.post('http://127.0.0.1:8080/api/unprompted/',{"user":roll_no,"action":"End","page":pageno,"time":curtime})
+    .then(response => {
+      console.log(response.data); 
+    })
+    .catch(error => {
+      console.error('Error while making the Axios request:', error);
+    });
+    navigate("/thankyou")
+    
     }
-  };
+
 
   return (
     <div className="h-screen w-screen divide-y divide-solid">
@@ -189,7 +190,7 @@ const Questionpage = () => {
                     className={`text-white bg-blue-texts rounded-full p-4 w-32 justify-items-end ${
                       isContinueDisabled ? "bg-gray-400 cursor-not-allowed" : ""
                     }`}
-                    onClick={handleContinue}
+                    onClick={handleSubmit}
                     disabled={isContinueDisabled}
                   >
                     Submit
