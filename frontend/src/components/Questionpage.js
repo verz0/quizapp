@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Timer from "./Timer";
 import Chat from "./chat";
+import { useLocation } from "react-router-dom";
+
 
 const Questionpage = () => {
   const navigate = useNavigate();
@@ -12,11 +14,15 @@ const Questionpage = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [resetHint, setResetHint] = useState(false);
 
-  const dateUnix = Date.now();
-  const date = new Date(dateUnix);
-  const hr = ("0" + date.getHours()).slice(-2);
-  const min = ("0" + date.getMinutes()).slice(-2);
-  const sec = ("0" + date.getSeconds()).slice(-2);
+  
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const roll_no = queryParams.get("roll_no");
+  const dateUnix=Date.now();
+  const date= new Date(dateUnix)
+  const hr = ('0' + date.getHours()).slice(-2);
+  const min = ('0' + date.getMinutes()).slice(-2); 
+  const sec = ('0' + date.getSeconds()).slice(-2); 
   const curtime = `${hr}:${min}:${sec}`;
   // console.log(curtime);
 
@@ -24,7 +30,7 @@ const Questionpage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/questions/"
+          "http://localhost:8080/api/questions/"
         );
         if (
           response.data &&
@@ -48,8 +54,8 @@ const Questionpage = () => {
   const currentQuestionPercent =
     ((currentQuestionIndex + 1) / totalQuestionCount) * 100;
 
-  const handleOptionClick = (option, index) => {
-    const action = JSON.stringify(option);
+
+  const handleOptionClick = (option,index) => {
     // console.log(action);
     // console.log(index);
     let va = "A";
@@ -60,8 +66,16 @@ const Questionpage = () => {
     } else if (index == 3) {
       va = "D";
     }
-    const pageno = JSON.stringify(currentQuestionIndex + 1);
-    const details = { user_id: "1", action: va, page: pageno, time: curtime };
+
+    else if(index==2){
+      va="C";
+    }
+    else if(index==3){
+      va="D";
+    }
+    const pageno=JSON.stringify(currentQuestionIndex+1);
+    
+    const details={"user":roll_no,"action":va,"page":pageno,"time":curtime}
     // console.log(details);
     axios
       .post("http://127.0.0.1:8080/api/unprompted/", details)
@@ -77,20 +91,14 @@ const Questionpage = () => {
 
   const isContinueDisabled = !selectedOption || !question;
   const handleContinue = () => {
-    const pageno = JSON.stringify(currentQuestionIndex + 1);
-    axios
-      .post("http://127.0.0.1:8080/api/unprompted/", {
-        user_id: "1",
-        action: "Continue",
-        page: pageno,
-        time: curtime,
-      })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error while making the Axios request:", error);
-      });
+    const pageno=JSON.stringify(currentQuestionIndex+1)
+    axios.post('http://127.0.0.1:8080/api/unprompted/',{"user":roll_no,"action":"Continue","page":pageno,"time":curtime})
+    .then(response => {
+      console.log(response.data); 
+    })
+    .catch(error => {
+      console.error('Error while making the Axios request:', error);
+    });
     if (!isContinueDisabled && question) {
       const nextQuestionIndex = currentQuestionIndex + 1;
       if (nextQuestionIndex < questions.length) {
@@ -102,19 +110,20 @@ const Questionpage = () => {
       }
     }
   };
+  
+  const handleSubmit = () => {
+    const pageno=JSON.stringify(currentQuestionIndex+1)
+    axios.post('http://127.0.0.1:8080/api/unprompted/',{"user":roll_no,"action":"End","page":pageno,"time":curtime})
+    .then(response => {
+      console.log(response.data); 
+    })
+    .catch(error => {
+      console.error('Error while making the Axios request:', error);
+    });
+    navigate("/thankyou")
+    
 
-  const handleTimeOut = () => {
-    // console.log(currentQuestionIndex);
-    const nextQuestionIndex = currentQuestionIndex + 1;
-    // console.log(nextQuestionIndex);
-    if (nextQuestionIndex < questions.length) {
-      setCurrentQuestionIndex(nextQuestionIndex);
-      setSelectedOption(null);
-      setResetHint((prev) => !prev);
-    } else {
-      console.log("End of questions");
-    }
-  };
+
 
   return (
     <div className="h-screen w-screen sm:w-full divide-y divide-solid overflow-y-auto">
@@ -193,7 +202,7 @@ const Questionpage = () => {
                     className={`text-white bg-blue-texts rounded-full p-4 w-32 justify-items-end ${
                       isContinueDisabled ? "bg-gray-400 cursor-not-allowed" : ""
                     }`}
-                    onClick={handleContinue}
+                    onClick={handleSubmit}
                     disabled={isContinueDisabled}
                   >
                     Submit
@@ -207,5 +216,5 @@ const Questionpage = () => {
     </div>
   );
 };
-
+}
 export default Questionpage;
