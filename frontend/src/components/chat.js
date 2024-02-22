@@ -53,7 +53,7 @@ const Chat = ({ text, resetHint }) => {
         } else {
           setShowCursor(false);
         }
-      }, 35);
+      }, 15);
 
       return () => {
         clearTimeout(typingTimeout);

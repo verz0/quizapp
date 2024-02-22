@@ -26,7 +26,7 @@ const Questionpage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/questions/"
+          "http://localhost:8000/api/questions/"
         );
         if (
           response.data &&
@@ -155,7 +155,7 @@ const Questionpage = () => {
         </div>
         <div className="sm:w-full lg:w-1/3 bg-blue-50 lg:h-auto overflow-y-auto">
           <div className="h-10 bg-blue-texts w-full flex justify-center text-white">
-            AI Assistance
+            AI/ChatGPT Help
           </div>
           <div
             className="bg-blue-50 p-4 box sm:max-h-[calc(100vh - 210px)] sm:overflow-auto"
