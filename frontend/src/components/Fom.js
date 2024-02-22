@@ -9,13 +9,21 @@ const BorderForm = () => {
     roll_no: "",
     name: "",
     email: "",
+    consent: false
   });
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.type === 'checkbox') {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.checked,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
 
   const handleSubmit = (e) => {
@@ -29,7 +37,7 @@ const BorderForm = () => {
   })
   console.log(formData);
     navigate(`/Welcome?roll_no=${formData.roll_no}`);
-    
+
   };
 
   return (
@@ -76,7 +84,7 @@ const BorderForm = () => {
             required
           />
         </div>
-        <div className="mb-20">
+        <div className="mb-7">
           <label
             htmlFor="email"
             className="block mb-2 text-sm font-medium text-blue-texts"
@@ -94,6 +102,21 @@ const BorderForm = () => {
             required
           />
         </div>
+        <div className="flex items-center mb-2">
+          <input
+            type="checkbox"
+            id="consent"
+            name="consent"
+            checked={formData.consent}
+            onChange={handleChange}
+            className="mr-2 "
+            style={{marginBottom:"8.7rem"}}
+            required
+          />
+          <label htmlFor="consent" className="text-xs text-blue-texts mb-7">
+          We take the protection of your privacy seriously and adhere to strict guidelines to maintain anonymity. No individual-level data will ever be shared outside our research team, ensuring complete confidentiality of all information provided by you. By participating in this survey, you agree to provide honest and accurate responses. Your participation is voluntary, and you may withdraw at any time without penalty. By submitting your completed survey, you are giving us permission to use your responses for research purposes only.
+          </label>
+        </div>
         <button
           type="submit"
           className="text-white bg-blue-texts hover:bg-[#4999c4] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm w-full py-2.5 text-center"
@@ -101,9 +124,9 @@ const BorderForm = () => {
           Submit
         </button>
       </form>
-      
+
     </div>
-    
+
   );
 };
 

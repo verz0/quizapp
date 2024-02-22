@@ -141,7 +141,7 @@ const Questionpage = () => {
                 (option, index) => (
                   <Button
                     key={index}
-                    className={`border border-blue-texts w-32 text-black p-4 rounded-lg ${
+                    className={`border border-blue-texts w-32 text-black p-4 rounded-lg text-sm ${
                       selectedOption === option
                         ? "bg-hover-color text-white"
                         : "hover:bg-hover-color hover:text-white"
@@ -191,7 +191,7 @@ const Questionpage = () => {
               <div>
                 {currentQuestionIndex + 1 != totalQuestionCount && (
                   <Button
-                    className={`text-white bg-blue-texts rounded-full p-4 w-32 justify-items-end ${
+                    className={`text-white bg-blue-texts rounded-full p-4 w-32 justify-items-end text-sm ${
                       isContinueDisabled ? "bg-gray-400 cursor-not-allowed" : ""
                     }`}
                     onClick={handleContinue}
@@ -202,7 +202,7 @@ const Questionpage = () => {
                 )}
                 {currentQuestionIndex + 1 == totalQuestionCount && (
                   <Button
-                    className={`text-white bg-blue-texts rounded-full p-4 w-32 justify-items-end ${
+                    className={`text-white bg-blue-texts rounded-full p-4 w-32 justify-items-end text-sm ${
                       isContinueDisabled ? "bg-gray-400 cursor-not-allowed" : ""
                     }`}
                     onClick={handleSubmit}
